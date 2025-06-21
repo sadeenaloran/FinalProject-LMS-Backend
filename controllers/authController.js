@@ -7,8 +7,8 @@ import {
 } from "../utils/userValidation.js";
 
 import passport from "../config/passport.js";
-import { generateToken, generateRefreshToken } from "../utils/jwt.js";
-import { sanitizeUser, createResponse } from "../utils/helpers.js";
+import { generateToken } from "../utils/jwt.js";
+import { createResponse } from "../utils/helpers.js";
 
 export const googleAuth = passport.authenticate("google", {
   scope: ["profile", "email"],
@@ -101,7 +101,6 @@ const AuthController = {
           .json({ success: false, message: "Google token is required" });
       }
 
-      // You need to implement or import this.verifyGoogleToken!
       const googleUser = await AuthController.verifyGoogleToken(googleToken);
       if (!googleUser) {
         return res
@@ -302,7 +301,7 @@ const AuthController = {
           name: user.name,
           email: user.email,
           role: user.role,
-          avatar: user.avatar, // Include avatar in response
+          avatar: user.avatar, 
         },
       });
     } catch (err) {

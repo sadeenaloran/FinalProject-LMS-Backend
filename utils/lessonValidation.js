@@ -41,7 +41,7 @@ export const createLessonSchema = Joi.object({
   }),
 });
 
-// Validation for updating a lesson 
+// Validation for updating a lesson
 export const updateLessonSchema = Joi.object({
   title: Joi.string().min(3).max(255).messages({
     "string.base": "Title must be a string",

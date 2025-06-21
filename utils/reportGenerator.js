@@ -108,6 +108,7 @@ const generatePdf = (data, reportType) => {
     }
   });
 };
+
 const generateCsv = (data, title) => {
   let csv = "";
   // Implement CSV generation

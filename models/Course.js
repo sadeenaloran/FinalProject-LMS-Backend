@@ -57,7 +57,7 @@ const CourseModel = {
       throw error;
     }
   },
-  //find by status
+
   async findByStatus(status) {
     try {
       const { rows } = await pool.query(
@@ -94,6 +94,7 @@ const CourseModel = {
       throw error;
     }
   },
+
   async findAllByCourseIds(courseIds) {
     if (!courseIds.length) return [];
 
@@ -116,6 +117,7 @@ const CourseModel = {
     const { rows } = await db.query(query, courseIds);
     return rows;
   },
+
   async update(id, updates) {
     const {
       title,
@@ -156,20 +158,11 @@ const CourseModel = {
     }
   },
 
-  // async delete(id) {
-  //   try {
-  //     await pool.query("DELETE FROM courses WHERE id = $1", [id]);
-  //     return true;
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // },
   async delete(id) {
     const client = await pool.connect();
     try {
       await client.query("BEGIN");
 
-      // 1. حذف lesson_completions
       await client.query(
         `
       DELETE FROM lesson_completions 
@@ -183,7 +176,6 @@ const CourseModel = {
         [id]
       );
 
-      // 2. حذف submissions
       await client.query(
         `
       DELETE FROM submissions 
@@ -200,7 +192,6 @@ const CourseModel = {
         [id]
       );
 
-      // 3. حذف assignments
       await client.query(
         `
       DELETE FROM assignments 
@@ -214,7 +205,6 @@ const CourseModel = {
         [id]
       );
 
-      // 4. حذف quizzes
       await client.query(
         `
       DELETE FROM quizzes 
@@ -228,7 +218,6 @@ const CourseModel = {
         [id]
       );
 
-      // 5. حذف lessons
       await client.query(
         `
       DELETE FROM lessons 
@@ -239,13 +228,10 @@ const CourseModel = {
         [id]
       );
 
-      // 6. حذف modules
       await client.query(`DELETE FROM modules WHERE course_id = $1`, [id]);
 
-      // 7. حذف enrollments
       await client.query(`DELETE FROM enrollments WHERE course_id = $1`, [id]);
 
-      // 8. حذف الكورس نفسه
       await client.query(`DELETE FROM courses WHERE id = $1`, [id]);
 
       await client.query("COMMIT");
@@ -257,6 +243,7 @@ const CourseModel = {
       client.release();
     }
   },
+
   async updateStatus(id, status, feedback = null) {
     try {
       const { rows } = await pool.query(

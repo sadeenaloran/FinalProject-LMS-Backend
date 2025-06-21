@@ -7,7 +7,6 @@ import {
 } from "../utils/questionValidator.js";
 
 export default {
-  // Create new question
   createQuestion: [
     authenticateJWT,
     authorize(["instructor", "admin"]),
@@ -15,7 +14,6 @@ export default {
       try {
         const { quiz_id } = req.params;
 
-        // Validate request body
         const { error, value } = questionCreateSchema.validate({
           ...req.body,
           quiz_id: Number(quiz_id),

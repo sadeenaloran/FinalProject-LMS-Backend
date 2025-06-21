@@ -22,45 +22,17 @@ const CourseController = {
     }
   },
 
-  // async getAllCourses(req, res, next) {
-  //   try {
-  //     let courses;
-
-  //     if (!req.user) {
-  //       // Public users (not logged in) only see approved coursess
-  //       courses = await CourseModel.findByStatus("approved");
-  //     } else if (req.user.role === "student") {
-  //       // Students see only approved courses
-  //       courses = await CourseModel.findByStatus("approved");
-  //     } else if (req.user.role === "admin" || req.user.role === "instructor") {
-  //       // Admins and instructors see all courses
-  //       courses = await CourseModel.findAll();
-  //     } else {
-  //       return res
-  //         .status(403)
-  //         .json({ success: false, message: "Unauthorized" });
-  //     }
-
-  //     res.json({ success: true, data: courses });
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // },
   async getAllCourses(req, res, next) {
     try {
       let courses;
 
       if (!req.user) {
-        // زائر غير مسجل دخول
         courses = await CourseModel.findByStatus("approved");
       } else if (req.user.role === "student") {
-        // طالب
         courses = await CourseModel.findByStatus("approved");
       } else if (req.user.role === "admin") {
-        // مسؤول (مدير النظام)
         courses = await CourseModel.findAll();
       } else if (req.user.role === "instructor") {
-        // مدرّس: فقط كورساته الخاصة
         courses = await CourseModel.findByInstructor(req.user.id);
       } else {
         return res
@@ -73,6 +45,7 @@ const CourseController = {
       next(error);
     }
   },
+
   async getCourseDetails(req, res, next) {
     try {
       const course = await CourseModel.findById(req.params.id);

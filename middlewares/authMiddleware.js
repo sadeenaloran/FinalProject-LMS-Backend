@@ -148,7 +148,6 @@ export const optionalJWT = async (req, res, next) => {
     }
     next();
   } catch (error) {
-    // Ignore error, proceed without user
     next();
   }
 };

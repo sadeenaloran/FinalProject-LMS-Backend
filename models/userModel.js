@@ -272,6 +272,7 @@ const UserModel = {
       throw error;
     }
   },
+
   async getActivityReport(timeRange = "monthly") {
     try {
       let query;

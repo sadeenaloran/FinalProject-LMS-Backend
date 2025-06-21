@@ -12,6 +12,7 @@ const CategoryModel = {
       throw error;
     }
   },
+  
  async updateCategory(id, value) {
     try {
       const { name } = value;
@@ -19,22 +20,24 @@ const CategoryModel = {
         "UPDATE categories SET name = $1 WHERE id = $2 RETURNING *",
         [name, id]
       );
-      return rows[0]; // null if not found
+      return rows[0]; 
     } catch (error) {
       throw error;
     }
   },
+
   async deleteCategory(id) {
     try {
       const { rowCount } = await pool.query(
         "DELETE FROM categories WHERE id = $1",
         [id]
       );
-      return rowCount > 0; // true if deleted, false if not found
+      return rowCount > 0; 
     } catch (error) {
       throw error;
     }
   },
+
   async findAll() {
     try {
       const { rows } = await pool.query("SELECT * FROM categories");

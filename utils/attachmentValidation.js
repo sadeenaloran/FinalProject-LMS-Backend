@@ -12,8 +12,8 @@ export const uploadFileSchema = Joi.object({
     buffer: Joi.binary().required(),
   })
     .required()
-    .unknown(true), // ✅ السماح بخصائص إضافية داخل الملف نفسه
-}).unknown(true); // (اختياري) السماح بخصائص إضافية خارج `file`
+    .unknown(true),
+}).unknown(true);
 
 // Schema for ID parameter validation
 export const idParamSchema = Joi.object({
@@ -34,5 +34,5 @@ export const attachmentDTOSchema = Joi.object({
   size: Joi.number().required(),
   public_id: Joi.string().required(),
   secure_url: Joi.string().uri().required(),
-  format: Joi.string().allow(null, "").optional(), // ✅ هذا هو التعديل المهم
+  format: Joi.string().allow(null, "").optional(),
 });

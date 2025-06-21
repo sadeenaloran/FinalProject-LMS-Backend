@@ -7,9 +7,9 @@ import {
 } from "../controllers/attachmentController.js";
 
 const router = Router();
-const upload = multer(); // بدون إعدادات يخزن الملف في الذاكرة (buffer)
+const upload = multer();
 
-router.post("/upload", upload.single("file"), uploadFile); // مهم جداً
+router.post("/upload", upload.single("file"), uploadFile);
 
 router.get("/file/:id", getFileById);
 router.delete("/file/:id", deleteFile);

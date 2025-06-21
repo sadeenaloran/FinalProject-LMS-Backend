@@ -10,40 +10,8 @@ import CourseModel from "../models/Course.js";
 const upload = multer();
 
 const SubmissionController = {
-  // async submitAssignment(req, res, next) {
-  //   try {
-  //     const { assignment_id, submission_url } = req.body;
-
-  //     // Verify assignment exists
-  //     const assignment = await AssignmentModel.findById(assignment_id);
-  //     if (!assignment) {
-  //       return res.status(404).json({
-  //         success: false,
-  //         message: "Assignment not found",
-  //       });
-  //     }
-
-  //     // Check if student is enrolled in the course
-  //     const lesson = await LessonModel.findById(assignment.lesson_id);
-  //     const module = await ModuleModel.findById(lesson.module_id);
-  //     //to check if the user is enrolled in the course from the enrollment model
-  //     const course = await CourseModel.findById(module.course_id);
-  //     const submission = await SubmissionModel.create({
-  //       assignment_id,
-  //       user_id: req.user.id,
-  //       submission_url,
-  //     });
-
-  //     res.status(201).json({
-  //       success: true,
-  //       submission,
-  //     });
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // },
   submitAssignment: [
-    upload.single("file"), // الملف رح يكون في الحقل "file"
+    upload.single("file"),
     async (req, res, next) => {
       try {
         const { assignment_id } = req.body;
@@ -53,7 +21,6 @@ const SubmissionController = {
             .json({ success: false, message: "assignment_id is required" });
         }
 
-        // تحقق من وجود الواجب
         const assignment = await AssignmentModel.findById(assignment_id);
         if (!assignment) {
           return res
@@ -61,14 +28,12 @@ const SubmissionController = {
             .json({ success: false, message: "Assignment not found" });
         }
 
-        // تحقق من إرسال ملف
         if (!req.file) {
           return res
             .status(400)
             .json({ success: false, message: "File is required" });
         }
 
-        // رفع الملف إلى Cloudinary مع resource_type:auto ليقبل أي نوع ملف
         const result = await uploadToCloudinary(req.file.buffer, {
           resource_type: "auto",
         });
@@ -79,12 +44,10 @@ const SubmissionController = {
             .json({ success: false, message: "Error uploading file to cloud" });
         }
 
-        // تحقق من تسجيل الطالب في الكورس (اختياري - حسب منطقك)
         const lesson = await LessonModel.findById(assignment.lesson_id);
         const module = await ModuleModel.findById(lesson.module_id);
         const course = await CourseModel.findById(module.course_id);
 
-        // إنشاء السوبميشن مع رابط الملف المرفوع
         const submission = await SubmissionModel.create({
           assignment_id,
           user_id: req.user.id,

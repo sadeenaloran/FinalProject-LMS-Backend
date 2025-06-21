@@ -2,7 +2,10 @@ import LessonModel from "../models/Lesson.js";
 import ModuleModel from "../models/Module.js";
 import CourseModel from "../models/Course.js";
 import AssignmentModel from "../models/Assignment.js";
-import { createLessonSchema, updateLessonSchema } from "../utils/lessonValidation.js";
+import {
+  createLessonSchema,
+  updateLessonSchema,
+} from "../utils/lessonValidation.js";
 
 const LessonController = {
   async createLesson(req, res, next) {
@@ -62,7 +65,6 @@ const LessonController = {
         });
       }
 
-      // Get assignments if any
       const assignments = await AssignmentModel.findByLessonId(req.params.id);
 
       res.json({
@@ -106,7 +108,6 @@ const LessonController = {
         });
       }
 
-      // Verify course ownership
       const module = await ModuleModel.findById(lesson.module_id);
       const course = await CourseModel.findById(module.course_id);
 
@@ -144,7 +145,6 @@ const LessonController = {
         });
       }
 
-      // Verify course ownership
       const module = await ModuleModel.findById(lesson.module_id);
       const course = await CourseModel.findById(module.course_id);
 
