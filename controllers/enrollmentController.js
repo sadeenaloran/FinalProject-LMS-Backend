@@ -1,6 +1,6 @@
 import enrollmentService from "../models/Enrollment.js";
 import { validateEnrollmentInput } from "../utils/enrollmentValidation.js";
-import EnrollmentModel from "../models/EnrollemtModel.js"; // نموذج تسجيلات
+import EnrollmentModel from "../models/EnrollemtModel.js";
 import CourseModel from "../models/Course.js";
 
 export default {
@@ -10,7 +10,6 @@ export default {
       const courses = await CourseModel.findByInstructor(instructorId);
       const courseIds = courses.map((c) => c.id);
 
-      // لو ما فيه كورسات يرجع مصفوفة فارغة عشان ما ينكسر
       if (courseIds.length === 0) {
         return res.json({ success: true, data: [] });
       }
@@ -22,25 +21,21 @@ export default {
       next(error);
     }
   },
-  /**
-   * Enroll a user in a course
-   */
+
+//  Enroll a user in a course
   async enrollUser(req, res) {
     try {
       const { courseId } = req.body;
       const userId = req.user.id;
 
-      // Validate input
       validateEnrollmentInput({ userId, courseId });
 
-      // Check if user is student
       if (req.user.role !== "student") {
         return res
           .status(403)
           .json({ error: "Only students can enroll in courses" });
       }
 
-      // Create enrollment
       const enrollment = await enrollmentService.createEnrollment(
         userId,
         courseId
@@ -59,9 +54,7 @@ export default {
     }
   },
 
-  /**
-   * Get enrollment details
-   */
+// Get enrollment details
   async getEnrollment(req, res) {
     try {
       const { id } = req.params;
@@ -89,14 +82,11 @@ export default {
     }
   },
 
-  /**
-   * Get all enrollments for the current user
-   */
+// Get all enrollments for the current user
   async getUserEnrollments(req, res) {
     try {
       const userId = req.user.id;
 
-      // Get all enrollments for user
       const enrollments = await enrollmentService.getUserEnrollments(userId);
 
       res.status(200).json({
@@ -112,9 +102,7 @@ export default {
     }
   },
 
-  /**
-   * Get detailed course progress including modules and lessons
-   */
+//  Get detailed course progress including modules and lessons
   async getCourseProgressDetails(req, res) {
     try {
       const { id } = req.params;
@@ -145,9 +133,7 @@ export default {
     }
   },
 
-  /**
-   * Mark a lesson as completed
-   */
+// Mark a lesson as completed
   async markLessonCompleted(req, res) {
     try {
       const { lessonId } = req.body;
@@ -199,9 +185,7 @@ export default {
     }
   },
 
-  /**
-   * Get user progress summary for a course
-   */
+// Get user progress summary for a course
   async getProgressSummary(req, res) {
     try {
       const { courseId } = req.params;

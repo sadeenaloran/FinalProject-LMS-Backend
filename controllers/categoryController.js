@@ -3,6 +3,7 @@ import {
   createCategorySchema,
   updateCategorySchema,
 } from "../utils/categoryValidation.js";
+
 const CategoryController = {
   async createCategory(req, res, next) {
     try {
@@ -19,6 +20,7 @@ const CategoryController = {
       next(error);
     }
   },
+
   async updateCategory(req, res, next) {
     try {
       const { error, value } = updateCategorySchema.validate(req.body);
@@ -41,6 +43,7 @@ const CategoryController = {
       next(err);
     }
   },
+
   async deleteCategory(req, res, next) {
     try {
       // Only admin can delete categories
@@ -56,6 +59,7 @@ const CategoryController = {
       next(err);
     }
   },
+
   async getAllCategories(req, res, next) {
     try {
       const categories = await CategoryModel.findAll();
@@ -64,6 +68,7 @@ const CategoryController = {
       next(error);
     }
   },
+
   async getCategory(req, res, next) {
     try {
       const category = await CategoryModel.findById(req.params.id);

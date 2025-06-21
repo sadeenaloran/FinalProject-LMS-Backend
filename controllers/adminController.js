@@ -1,14 +1,16 @@
 import CourseModel from "../models/Course.js";
 import bcrypt from "bcryptjs";
 import UserModel from "../models/userModel.js";
-import { addUserSchema, changePasswordSchema } from "../utils/userValidation.js";
+import {
+  addUserSchema,
+  changePasswordSchema,
+} from "../utils/userValidation.js";
 
 import ExcelJS from "exceljs";
 
 const AdminController = {
   async addUser(req, res, next) {
     try {
-      // Validate request body
       const { error, value } = addUserSchema.validate(req.body);
       if (error) {
         return res.status(400).json({
@@ -17,7 +19,6 @@ const AdminController = {
         });
       }
 
-      // Use validated values
       const { name, email, password, role } = value;
 
       if (!["instructor", "student"].includes(role)) {
@@ -121,13 +122,13 @@ const AdminController = {
           newPassword,
           confirmPassword,
         });
+
         if (error) {
           return res.status(400).json({
             success: false,
             error: error.details[0].message,
           });
         }
-        // Changed Password
         if (!user.password) {
           updateData.password = await bcrypt.hash(newPassword, 12);
         } else {
@@ -196,6 +197,7 @@ const AdminController = {
       });
     }
   },
+  
   // Get user by ID
   async getUserById(req, res, next) {
     try {
@@ -367,7 +369,7 @@ const AdminController = {
     }
   },
 
-//  Export report data
+  //  Export report data
   async exportReport(req, res) {
     try {
       const { reportType } = req.query;

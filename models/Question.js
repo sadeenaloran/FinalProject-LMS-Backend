@@ -1,7 +1,6 @@
 import { pool } from "../config/db.js";
 
 export default {
-  // إنشاء سؤال جديد
   async create(quiz_id, questionData) {
     try {
       const {
@@ -33,7 +32,6 @@ export default {
     }
   },
 
-  // الحصول على سؤال بواسطة ID
   async findById(id) {
     try {
       const query = `
@@ -49,7 +47,6 @@ export default {
     }
   },
 
-  // تحديث سؤال
   async update(id, updates) {
     try {
       const { question, options, correct_answer, score, order } = updates;
@@ -80,7 +77,6 @@ export default {
     }
   },
 
-  // حذف سؤال
   async delete(id) {
     try {
       const query = `
@@ -97,7 +93,6 @@ export default {
     }
   },
 
-  // الحصول على جميع أسئلة اختبار معين
   async findByQuizId(quiz_id) {
     try {
       const query = `

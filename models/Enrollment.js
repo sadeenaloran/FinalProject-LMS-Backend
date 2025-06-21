@@ -1,9 +1,7 @@
 import { pool } from "../config/db.js";
 
 export default {
-  /**
-   * Create a new enrollment
-   */
+  // Create a new enrollment
   async createEnrollment(userId, courseId) {
     try {
       // Check for existing enrollment
@@ -29,9 +27,8 @@ export default {
       throw error;
     }
   },
-  /**
-   * Get enrollment by ID
-   */
+
+  // Get enrollment by ID
   async getEnrollmentById(id) {
     try {
       const result = await pool.query(
@@ -49,9 +46,7 @@ export default {
     }
   },
 
-  /**
-   * Get all enrollments for a user
-   */
+  // Get all enrollments for a user
   async getUserEnrollments(userId) {
     try {
       const result = await pool.query(
@@ -68,9 +63,7 @@ export default {
     }
   },
 
-  /**
-   * Get course ID for an item (lesson, quiz, or assignment)
-   */
+  // Get course ID for an item (lesson, quiz, or assignment)
   async getItemCourseId(itemId, itemType) {
     try {
       let query;
@@ -109,9 +102,7 @@ export default {
     }
   },
 
-  /**
-   * Check if user is enrolled in a course
-   */
+  // Check if user is enrolled in a course
   async checkUserEnrollment(userId, courseId) {
     try {
       const result = await pool.query(
@@ -125,9 +116,7 @@ export default {
     }
   },
 
-  /**
-   * Mark a lesson as completed
-   */
+  // Mark a lesson as completed
   async markLessonCompleted(userId, lessonId) {
     try {
       const result = await pool.query(
@@ -143,9 +132,7 @@ export default {
     }
   },
 
-  /**
-   * Calculate overall progress for a course
-   */
+  // Calculate overall progress for a course
   async calculateProgress(userId, courseId) {
     try {
       // Get total lessons count
@@ -184,9 +171,7 @@ export default {
     }
   },
 
-  /**
-   * Get course progress details with completion status
-   */
+  // Get course progress details with completion status
   async getCourseProgressDetails(enrollmentId, userId) {
     try {
       const enrollment = await this.getEnrollmentById(enrollmentId);
@@ -263,9 +248,7 @@ export default {
     }
   },
 
-  /**
-   * Get user progress summary for a course
-   */
+  // Get user progress summary for a course
   async getUserProgressSummary(userId, courseId) {
     try {
       // Lesson completion stats
@@ -315,9 +298,7 @@ export default {
     }
   },
 
-  /**
-   * Get completed lessons for a user in a course
-   */
+  // Get completed lessons for a user in a course
   async getCompletedLessons(userId, courseId) {
     try {
       const result = await pool.query(

@@ -18,7 +18,7 @@ const ModuleController = {
 
       const { course_id, title, description, order, duration } = value;
 
-      // Verify the course exists and belongs to the instructor
+
       const course = await CourseModel.findById(course_id);
       if (!course) {
         return res.status(404).json({
@@ -62,6 +62,7 @@ const ModuleController = {
       next(error);
     }
   },
+
   async getModuleById(req, res, next) {
     try {
       const module = await ModuleModel.findById(req.params.id);
@@ -81,6 +82,7 @@ const ModuleController = {
       next(error);
     }
   },
+
   async updateModule(req, res, next) {
     try {
       const { error, value } = updateModuleSchema.validate(req.body);

@@ -1,4 +1,3 @@
-// models/Attachment.js
 import { pool } from "../config/db.js";
 
 const AttachmentModel = {

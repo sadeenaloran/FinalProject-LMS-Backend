@@ -1,7 +1,6 @@
 import { pool } from "../config/db.js";
 
 export default {
-  // Quiz CRUD Operations
   async create(lesson_id, title, max_score = 10) {
     try {
       const query = `
@@ -84,7 +83,6 @@ export default {
     }
   },
 
-  // Quiz Submission Operations
   async createSubmission(quiz_id, user_id, answers) {
     const client = await pool.connect();
     try {

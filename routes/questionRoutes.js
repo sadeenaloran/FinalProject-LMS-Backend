@@ -4,7 +4,6 @@ import { authenticateJWT, authorize } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
-// إضافة سؤال جديد (للمعلمين والمشرفين)
 router.post(
   "/:quiz_id",
   authenticateJWT,
@@ -12,10 +11,8 @@ router.post(
   questionController.createQuestion
 );
 
-// الحصول على سؤال
 router.get("/:id", authenticateJWT, questionController.getQuestion);
 
-// تحديث سؤال (للمعلمين والمشرفين)
 router.put(
   "/:id",
   authenticateJWT,
@@ -23,7 +20,6 @@ router.put(
   questionController.updateQuestion
 );
 
-// حذف سؤال (للمعلمين والمشرفين)
 router.delete(
   "/:id",
   authenticateJWT,
@@ -31,7 +27,6 @@ router.delete(
   questionController.deleteQuestion
 );
 
-// الحصول على جميع أسئلة اختبار معين
 router.get(
   "/quiz/:quiz_id",
   authenticateJWT,

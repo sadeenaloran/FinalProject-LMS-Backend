@@ -2,7 +2,7 @@ import AssignmentModel from "../models/Assignment.js";
 import LessonModel from "../models/Lesson.js";
 import ModuleModel from "../models/Module.js";
 import CourseModel from "../models/Course.js";
-import { pool } from "../config/db.js"; // Import the pool
+import { pool } from "../config/db.js"; 
 
 import { getCourseFromAssignment } from "../utils/helpers.js";
 import {
@@ -23,7 +23,6 @@ const AssignmentController = {
       }
       const { lesson_id, title, description, max_score } = value;
 
-      // Verify lesson exists and get course info
       const lesson = await LessonModel.findById(lesson_id);
       if (!lesson) {
         return res.status(404).json({
@@ -35,7 +34,6 @@ const AssignmentController = {
       const module = await ModuleModel.findById(lesson.module_id);
       const course = await CourseModel.findById(module.course_id);
 
-      // Authorization check
       if (course.instructor_id !== req.user.id) {
         return res.status(403).json({
           success: false,
@@ -110,7 +108,6 @@ const AssignmentController = {
         });
       }
 
-      // Verify course ownership
       const lesson = await LessonModel.findById(assignment.lesson_id);
       const module = await ModuleModel.findById(lesson.module_id);
       const course = await CourseModel.findById(module.course_id);
@@ -147,7 +144,6 @@ const AssignmentController = {
         });
       }
 
-      // Use helper to get course
       const course = await getCourseFromAssignment(req.params.id);
 
       if (req.user.role !== "admin" && course.instructor_id !== req.user.id) {
@@ -166,17 +162,14 @@ const AssignmentController = {
       next(error);
     }
   },
-  // Add to AssignmentController.js
   async getInstructorCoursesWithHierarchy(req, res, next) {
     try {
       const instructorId = req.user.id;
 
-      // ✅ Get courses by instructor using the correct method
       const courses = await CourseModel.findByInstructor(instructorId);
 
       const result = await Promise.all(
         courses.map(async (course) => {
-          // ✅ Use proper ID field (PostgreSQL uses course.id, not course._id)
           const modules = await ModuleModel.findByCourseId(course.id);
 
           const modulesWithLessons = await Promise.all(
@@ -184,7 +177,7 @@ const AssignmentController = {
               const lessons = await LessonModel.findByModuleId(module.id);
 
               return {
-                ...module, // no toObject needed
+                ...module, 
                 lessons,
               };
             })
@@ -210,10 +203,8 @@ const AssignmentController = {
     try {
       const instructorId = req.user.id;
 
-      // ✅ 1. Get all instructor's courses
       const courses = await CourseModel.findByInstructor(instructorId);
 
-      // ✅ 2. Build nested structure with modules and lessons
       const allLessons = await Promise.all(
         courses.map(async (course) => {
           const modules = await ModuleModel.findByCourseId(course.id);
@@ -224,14 +215,12 @@ const AssignmentController = {
         })
       );
 
-      // ✅ 3. Flatten all lessons into one array
       const lessonIds = allLessons.flat().map((lesson) => lesson.id);
 
       if (lessonIds.length === 0) {
         return res.json({ success: true, data: [] });
       }
 
-      // ✅ 4. Get assignments related to those lessons
       const assignments = await AssignmentModel.findDetailedByLessonIds(
         lessonIds
       );
@@ -242,7 +231,7 @@ const AssignmentController = {
       });
     } catch (error) {
       console.error("Error in getInstructorAssignments:", error);
-      next(error); // مرره للـ error middleware
+      next(error); 
     }
   },
   async getAssignmentsByCourse(req, res, next) {
@@ -251,7 +240,6 @@ const AssignmentController = {
       const userId = req.user.id;
       const userRole = req.user.role;
 
-      // Verify course exists
       const course = await CourseModel.findById(courseId);
       if (!course) {
         return res.status(404).json({
@@ -260,7 +248,6 @@ const AssignmentController = {
         });
       }
 
-      // Authorization checks
       if (userRole === "student") {
         const { rows } = await pool.query(
           `SELECT id FROM enrollments 
@@ -280,7 +267,6 @@ const AssignmentController = {
         });
       }
 
-      // Get assignments
       const assignments = await AssignmentModel.findByCourseId(courseId);
 
       res.json({

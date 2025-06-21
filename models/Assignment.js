@@ -17,7 +17,8 @@ const AssignmentModel = {
       throw error;
     }
   },
-  //a.*title to show all the col in the databeas
+  
+  // title to show all the col in the databeas
   async findById(id) {
     const { rows } = await pool.query(
       `SELECT a.*, l.title as lesson_title
@@ -60,7 +61,7 @@ const AssignmentModel = {
     await pool.query("DELETE FROM assignments WHERE id = $1", [id]);
     return true;
   },
-  // models/AssignmentModel.js
+
   findManyByLessonIds: async (lessonIds) => {
     if (!lessonIds.length) return [];
 
@@ -74,7 +75,7 @@ const AssignmentModel = {
     const { rows } = await pool.query(query, lessonIds);
     return rows;
   },
-  // داخل AssignmentModel.js
+
   findDetailedByLessonIds: async (lessonIds) => {
     if (!lessonIds.length) return [];
 
@@ -97,6 +98,7 @@ const AssignmentModel = {
     const { rows } = await pool.query(query, lessonIds);
     return rows;
   },
+
   async findByCourseId(courseId) {
     const query = `
       SELECT 
