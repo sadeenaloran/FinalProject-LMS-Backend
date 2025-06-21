@@ -1,5 +1,5 @@
 // 5MB max file size
-export const MAX_FILE_SIZE = 5 * 1024 * 1024; 
+export const MAX_FILE_SIZE = 100 * 1024 * 1024;  
 
 // Allowed file types
 export const ALLOWED_FILE_TYPES = [

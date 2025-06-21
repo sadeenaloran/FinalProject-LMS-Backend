@@ -12,6 +12,8 @@ import {
 } from "../utils/attachmentValidation.js";
 
 export const uploadFile = async (req, res) => {
+  console.log("Received file:", req.file);
+
   try {
     if (!req.file) {
       return res.status(400).json({ message: "No file uploaded" });
@@ -23,7 +25,7 @@ export const uploadFile = async (req, res) => {
     }
 
     const result = await uploadToCloudinary(req.file.buffer, {
-      resource_type: "auto", // صححت هنا
+      resource_type: "auto",
     });
 
     const { error: cloudinaryError } =
@@ -40,7 +42,7 @@ export const uploadFile = async (req, res) => {
       size: req.file.size,
       public_id: result.public_id,
       secure_url: result.secure_url,
-      format: result.format || null, // صححت هنا
+      format: result.format || null,
     };
 
     const { error: dtoError } = attachmentDTOSchema.validate(attachmentDTO);
