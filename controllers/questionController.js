@@ -13,6 +13,7 @@ export default {
     async (req, res) => {
       try {
         const { quiz_id } = req.params;
+        console.log("POST", req.params.quiz_id);
 
         const { error, value } = questionCreateSchema.validate({
           ...req.body,

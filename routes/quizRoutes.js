@@ -1,6 +1,7 @@
 import express from "express";
 import quizController from "../controllers/quizController.js";
 import { authenticateJWT, authorize } from "../middlewares/authMiddleware.js";
+import questionController from "../controllers/questionController.js";
 
 const router = express.Router();
 
@@ -10,6 +11,13 @@ router.post(
   authenticateJWT,
   authorize(["instructor", "admin"]),
   quizController.createQuiz
+);
+
+router.post(
+  "/:quiz_id/questions",
+  authenticateJWT,
+  authorize(["instructor", "admin"]),
+  questionController.createQuestion
 );
 
 router.get("/:id", authenticateJWT, quizController.getQuiz);
@@ -32,7 +40,7 @@ router.get(
   "/lesson/:lesson_id",
   authenticateJWT,
   quizController.getQuizzesByLesson
-);
+); 
 
 // Quiz Submission endpoints
 router.post(
